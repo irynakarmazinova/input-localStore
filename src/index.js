@@ -19,7 +19,7 @@ function onFormInput(e) {
   // имитация отправки формы
   e.preventDefault(); //1.
 
-  console.log('Отправляем форму');
+  // console.log('Отправляем форму');
 
   // e.currentTarget - это сейчас форма, потому что onFormInput сейчас висит на formRef
   // нельзя писать this.reset() - в этих методах нельзя надеется на контекст
@@ -32,10 +32,9 @@ formRef.addEventListener('submit', onFormInput);
 // когда сложные формы и много полей
 // сделать так чтобы сохраняло не только сообщение но и имя, и все в одном обьекте
 function onFormInputs(e) {
-  console.log(e.target.name);
-  console.log(e.target.value);
-
   formData[e.target.name] = e.target.value;
+  formData[e.target.message] = e.target.value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
   console.log(formData);
 }
 formRef.addEventListener('input', onFormInputs);
@@ -46,9 +45,10 @@ formRef.addEventListener('input', onFormInputs);
  * - 3. Можно добавить throttle
  */
 function onTextareaInput(e) {
-  const message = e.target.value;
+  const message = e.target.value; //1.
+
   // const message = e.currentTarget.value; //из-за всплытия буду ошибки, не использовать
-  console.log(message); //1.
+  // console.log(message);
 
   localStorage.setItem(STORAGE_KEY, message); //2.
   //value текстареи - это строка.
@@ -68,7 +68,7 @@ function populateTextarea() {
 
   // 2.
   if (savedMessage) {
-    console.log(savedMessage);
+    // console.log(savedMessage);
     textareaRef.value = savedMessage; //3.
   }
 }
