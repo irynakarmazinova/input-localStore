@@ -24,47 +24,41 @@ formRef.addEventListener('submit', onFormInput);
 
 // когда сложные формы и много полей
 // сделать так чтобы сохраняло не только сообщение но и имя, и все в одном обьекте
-// function onFormInputs(e) {
-//   formData[e.target.name] = e.target.value;
-//   formData[e.target.message] = e.target.value;
-//   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-//   console.log(formData);
-// }
-// formRef.addEventListener('input', onFormInputs);
-
-/*
- * - 1. Получаем значение(данные) поля textarea при вводе
- * - 2. Сохраняем его в хранилище
- * - 3. Можно добавить throttle
- */
-function onTextareaInput(e) {
-  const message = e.target.value; //1.
-  localStorage.setItem(STORAGE_KEY, message); //2.
+function onAllFormsInput(e) {
+  formData[e.target.name] = e.target.value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
-textareaRef.addEventListener('input', throttle(onTextareaInput, 500));
+formRef.addEventListener('input', throttle(onAllFormsInput, 500));
+textareaRef.addEventListener('input', throttle(onAllFormsInput, 500));
 
 /*
-// 
  * populateTextarea будет вызываться(выполняться) при загрузке страницы
  * - 1. Получаем значение из хранилища
  * - 2. Всегда нужно проверять есть ли что-то в поле ввода. если да, то выполняем код
  * - 3. Если там что-то было, обновляем DOM
  */
-function populateTextarea() {
+function populateTextarea(e) {
   const savedMessage = localStorage.getItem(STORAGE_KEY); //1.
+
   // 2.
   if (savedMessage) {
+    formRef.value = savedMessage;
     textareaRef.value = savedMessage; //3.
   }
+
+  // как сделать так, что бы при перезагрузке с локалстораж в имя попало с объекта имя, а в сообщение попало message из объекта
+  // сейчас все попадает целым обектом в сообщение
 }
 populateTextarea();
 
 // --------------------------------------------------------------------------
-// полная копия
+// простой вариант - без использвания объекта
+
+// const formRef = document.querySelector('.js-feedback-form');
+// const textareaRef = document.querySelector('.js-feedback-form textarea');
+
 // константа - константное значение между разными запусками скрипта
 // const STORAGE_KEY = 'feedback-message';
-
-// const formData = {};
 
 // /*
 //  * - 1. Остановить(запретить) поведение по умолчанию
@@ -84,16 +78,6 @@ populateTextarea();
 //   localStorage.removeItem(STORAGE_KEY); //3.
 // }
 // formRef.addEventListener('submit', onFormInput);
-
-// // когда сложные формы и много полей
-// // сделать так чтобы сохраняло не только сообщение но и имя, и все в одном обьекте
-// // function onFormInputs(e) {
-// //   formData[e.target.name] = e.target.value;
-// //   formData[e.target.message] = e.target.value;
-// //   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
-// //   console.log(formData);
-// // }
-// // formRef.addEventListener('input', onFormInputs);
 
 // /*
 //  * - 1. Получаем значение(данные) поля textarea при вводе
