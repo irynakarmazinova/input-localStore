@@ -12,6 +12,8 @@ const STORAGE_KEY = 'feedback-message';
 
 const formData = {};
 
+checkboxRef.checked = false;
+
 /*
  * - 1. Остановить(запретить) поведение по умолчанию
  * - 2. Убираем сообщение из хранилища (метод reset - сбрасывает значение всех полей в начальное значение)
@@ -47,17 +49,13 @@ function populateTextarea(e) {
 
     nameInputRef.value = savedMessage.name;
     textareaRef.value = savedMessage.message; //3.
+    // checkboxRef.checked = true;
+    // checkboxRef.checked = Boolean(checkboxRef);
 
-    if (savedMessage === savedMessage.agreement['on']) {
-      checkboxRef.checked = true;
-    } else {
-      checkboxRef.checked = false;
-    }
+    checkboxRef.checked = false ? (checkboxRef.checked = false) : (checkboxRef.checked = true);
+    // почему agreement: "on"?
+    // когда чекбокс не выбран - то не выбирать его, а когда выбрать, то при перезагрузке выбрать
   }
-
-  // как сделать так, что бы при перезагрузке с локалстораж в имя попало с объекта имя, а в сообщение попало message из объекта
-  // как наполнять поля формы из этого объекта без библиотеки вручную
-  // сейчас все попадает целым обектом в сообщение
 }
 populateTextarea();
 
