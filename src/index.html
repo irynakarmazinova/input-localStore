@@ -10,11 +10,16 @@
     <form class="feedback-form js-feedback-form">
       <label>
         <b>Имя</b>
-        <input type="text" name="name" placeholder="Введите ваше имя" value="Анонимус" />
+        <!-- <input type="text" name="name" placeholder="Введите ваше имя" value="Анонимус" /> -->
+        <input type="text" name="name" placeholder="Введите ваше имя" />
       </label>
       <label>
         <b>Сообщение</b>
         <textarea name="message" rows="6"></textarea>
+      </label>
+      <input type="checkbox" id="user-choise" name="agreement" />
+      <label for="user-choise">
+        <span> Соглашаюсь с рассылкой</span>
       </label>
       <button type="submit">Оставить отзыв</button>
     </form>

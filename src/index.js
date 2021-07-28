@@ -2,8 +2,10 @@
 import throttle from 'lodash.throttle';
 import './style.css';
 
-const formRef = document.querySelector('.js-feedback-form');
-const textareaRef = document.querySelector('.js-feedback-form textarea');
+const formRef = document.querySelector('.js-feedback-form'); //вся форма
+const textareaRef = document.querySelector('.js-feedback-form textarea'); //только текстареа
+const nameInputRef = document.querySelector('.js-feedback-form input[name="name"]'); //только инпут для ввода имени
+const checkboxRef = document.getElementById('user-choise'); //только чекбокс
 
 // константа - константное значение между разными запусками скрипта
 const STORAGE_KEY = 'feedback-message';
@@ -29,7 +31,6 @@ function onAllFormsInput(e) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 formRef.addEventListener('input', throttle(onAllFormsInput, 500));
-textareaRef.addEventListener('input', throttle(onAllFormsInput, 500));
 
 /*
  * populateTextarea будет вызываться(выполняться) при загрузке страницы
@@ -38,15 +39,24 @@ textareaRef.addEventListener('input', throttle(onAllFormsInput, 500));
  * - 3. Если там что-то было, обновляем DOM
  */
 function populateTextarea(e) {
-  const savedMessage = localStorage.getItem(STORAGE_KEY); //1.
+  let savedMessage = localStorage.getItem(STORAGE_KEY); //1.
 
   // 2.
   if (savedMessage) {
-    formRef.value = savedMessage;
-    textareaRef.value = savedMessage; //3.
+    savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+    nameInputRef.value = savedMessage.name;
+    textareaRef.value = savedMessage.message; //3.
+
+    if (savedMessage === savedMessage.agreement['on']) {
+      checkboxRef.checked = true;
+    } else {
+      checkboxRef.checked = false;
+    }
   }
 
   // как сделать так, что бы при перезагрузке с локалстораж в имя попало с объекта имя, а в сообщение попало message из объекта
+  // как наполнять поля формы из этого объекта без библиотеки вручную
   // сейчас все попадает целым обектом в сообщение
 }
 populateTextarea();
