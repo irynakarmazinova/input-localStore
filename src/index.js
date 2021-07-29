@@ -37,24 +37,22 @@ formRef.addEventListener('input', throttle(onAllFormsInput, 500));
 /*
  * populateTextarea будет вызываться(выполняться) при загрузке страницы
  * - 1. Получаем значение из хранилища
- * - 2. Всегда нужно проверять есть ли что-то в поле ввода. если да, то выполняем код
+ * - 2. Всегда нужно проверять есть ли что-то в поле ввода. Eсли да, то выполняем код
  * - 3. Если там что-то было, обновляем DOM
  */
-function populateTextarea(e) {
+function populateTextarea() {
   let savedMessage = localStorage.getItem(STORAGE_KEY); //1.
 
   // 2.
   if (savedMessage) {
     savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-    nameInputRef.value = savedMessage.name;
-    textareaRef.value = savedMessage.message; //3.
-    // checkboxRef.checked = true;
-    // checkboxRef.checked = Boolean(checkboxRef);
+    nameInputRef.value = savedMessage.name; //3.
+    textareaRef.value = savedMessage.message;
 
-    checkboxRef.checked = false ? (checkboxRef.checked = false) : (checkboxRef.checked = true);
-    // почему agreement: "on"?
-    // когда чекбокс не выбран - то не выбирать его, а когда выбрать, то при перезагрузке выбрать
+    // если у savedMessage есть agreement(тоесть чекбокс выбран) - то выбрать его, а если нет, то не выбирать
+    savedMessage.agreement ? (checkboxRef.checked = true) : (checkboxRef.checked = false);
+    // checkboxRef.checked = Boolean(checkboxRef);
   }
 }
 populateTextarea();
